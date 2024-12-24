@@ -24,72 +24,70 @@ def obter_cores():
         "azul": "#003452"
     }
 
-# # cores
-# co0 = "#2e2d2b"  # Preta
-# co1 = "#feffff"  # Branca
-# co2 = "#e5e5e5"  # grey
-# co3 = "#00a095"  # Verde
-# co4 = "#403d3d"   # letra
-# co6 = "#003452"   # azul
-
-
 # Criando janela
-janela = Tk()
-janela.title("")
-janela.geometry('810x535')
-janela.configure(background=obter_cores()["branco"])
-janela.resizable(width=FALSE, height=FALSE)
-nb = ttk.Notebook(janela)
-nb.grid(row=0, column=0, pady=0, padx=0, sticky=NSEW, columnspan=5)
+def criar_janela():
+    janela = Tk()
+    janela.title("")
+    janela.geometry('910x535')
+    janela.configure(background=obter_cores()["branco"])
+    janela.resizable(width=FALSE, height=FALSE)
 
-style = Style(janela)
-style.theme_use("clam")
+    nb = ttk.Notebook(janela)
+    nb.grid(row=0, column=0, pady=0, padx=0, sticky=NSEW, columnspan=5)
 
-# Criando Frames
-tb1 = Frame(janela)
-nb.add(tb1, text='Alunos')
-tb2 = Frame(janela)
-nb.add(tb2, text='Funcionarios')
+    # Criando Frames
+    tb1 = Frame(janela)
+    nb.add(tb1, text='Alunos')
+    tb2 = Frame(janela)
+    nb.add(tb2, text='Funcionarios')
+
+    return tb1, janela
+
+tb1, janela = criar_janela()
 
 frame_logo = Frame(tb1, width=850, height=52, bg = obter_cores()["azul"])
 frame_logo.grid(row=0, column=0, pady=0, padx=0, sticky=NSEW, columnspan=5)
 
 frame_botoes = Frame(janela, width=100, height=200, bg = obter_cores()["branco"], relief=RAISED)
-
-
-
 frame_botoes.grid(row=1, column=0, pady=1, padx=0, sticky=NSEW)
 
 frame_detalhes = Frame(janela, width=800, height=100, bg = obter_cores()["branco"], relief=SOLID)
 frame_detalhes.grid(row=1, column=1, pady=1, padx=10, sticky=NSEW)
 
-frame_tabela = Frame(janela, width=850, height=200, bg = obter_cores()["branco"])
+frame_tabela = Frame(janela, width=850, height=200, bg = obter_cores()["preto"])
 frame_tabela.grid(row=3, column=0, pady=0, padx=10, sticky=NSEW, columnspan=5)
 
-
 # Trabalhando no frame Logo ----------------------------
-global imagem, imagem_string, l_imagem
+# global imagem, imagem_string, l_imagem
 
-app_lg = Image.open('./img/logo.webp')
-app_lg = app_lg.resize((40, 40))
-app_lg = ImageTk.PhotoImage(app_lg)
-app_logo = Label(tb1, image=app_lg, text=" Sistema de Registro de Alunos",
-                 width=850, compound=LEFT, anchor=NW, font=('Verdana 15'), bg = obter_cores()["azul"], fg = obter_cores()["branco"])
-app_logo.place(x=5, y=0)
+# app_lg = Image.open('./img/logo.webp')
+# app_lg = app_lg.resize((40, 40))
+# app_lg = ImageTk.PhotoImage(app_lg)
+# app_logo = Label(tb1, image=app_lg, text=" Sistema de Registro de Alunos",
+#                  width=850, compound=LEFT, anchor=NW, font=('Verdana 15'), bg = obter_cores()["azul"], fg = obter_cores()["branco"])
+# app_logo.place(x=5, y=0)
+
+def carregar_imagem(caminho, tamanho):
+    try:
+        img = Image.open('./img/logo.png')
+        img = img.resize((40, 40))
+        return ImageTk.PhotoImage(img)
+    except FileNotFoundError:
+        messagebox.showerror("Erro", f"Arquivo não encontrado: {caminho}")
+        return None
 
 
-# abrindo a imagem
-imagem = Image.open('./img/logo.png')
-imagem = imagem.resize((130, 130))
-imagem = ImageTk.PhotoImage(imagem)
+# Configuração de logo e botões principais
+def configurar_logo(tb1, frame_logo):
+    logo_img = carregar_imagem('./img/logo.png', (40, 40))
+    if logo_img:
+        Label(tb1, image=logo_img, text="Sistema de Registro de Alunos", compound="left",
+              anchor="nw", font=('Verdana 15'), bg = obter_cores()["branco"], fg= obter_cores()["verde"]).place(x=5, y=0)
 
-l_imagem = Label(frame_detalhes, image=imagem, bg = obter_cores()["branco"], fg= obter_cores()["verde"])
-l_imagem.place(x=390, y=10)
-
-# ------------- Criando funcoes para CRUD ---------------
-
-# funcao criar
-
+    # Exemplo de imagem principal
+    principal_img = carregar_imagem('./img/logo.png', (130, 130))
+    if principal_img:
+        Label(frame_logo, image=principal_img, bg=["branco"]).place(x=390, y=10)
 
 def adicionar():
     """
@@ -184,8 +182,8 @@ def procurar():
     imagem = imagem.resize((130, 130))
     imagem = ImageTk.PhotoImage(imagem)
 
-l_imagem = Label(frame_detalhes, image=imagem, bg = obter_cores()["branco"], fg= obter_cores()["verde"])
-l_imagem.place(x=390, y=10)
+    l_imagem = Label(frame_detalhes, image=imagem, bg = obter_cores()["branco"], fg = obter_cores()["verde"])
+    l_imagem.place(x=390, y=10)
 
 
 # funcao atualizar
